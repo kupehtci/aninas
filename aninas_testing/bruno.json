@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "aninas_testing",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}
