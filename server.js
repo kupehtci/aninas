@@ -6,7 +6,7 @@ const app = express();
 
 // Enable CORS for the React application
 app.use(cors({
-  origin: 'http://localhost:5173', // React dev server URL
+  origin: '*', // http://localhost:5173 or http://localhost:5174 react dev server URL
   credentials: true
 }));
 
@@ -17,8 +17,9 @@ app.use('/api', createProxyMiddleware({
   pathRewrite: {
     '^/api': '/api/invoicing/v1' // Rewrite path
   },
+
+  // Add API Key to the request headers
   onProxyReq: (proxyReq) => {
-    // Add the API key to the request
     proxyReq.setHeader('key', '87abe867da54d8240d912424b7ca567b');
   }
 }));

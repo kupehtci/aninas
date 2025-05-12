@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { HOLDED_CONFIG, ENDPOINTS } from '../config/odoo';
+import { HOLDED_CONFIG, ENDPOINTS } from '../config/holded_config';
 
 const api = axios.create({
     baseURL: HOLDED_CONFIG.baseURL,
