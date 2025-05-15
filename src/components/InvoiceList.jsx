@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
     Container,
     Typography,
@@ -12,8 +12,16 @@ import {
     TableRow,
     Paper,
     Button,
-    Box
+    Box,
+    Collapse,
+    IconButton,
+    List,
+    ListItem,
+    ListItemText,
+    Divider
 } from '@mui/material';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { Link } from 'react-router-dom';
 import { holdedService } from '../services/holdedService';
 
@@ -21,6 +29,7 @@ export const InvoiceList = () => {
     const [invoices, setInvoices] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [expandedRows, setExpandedRows] = useState({});
 
     useEffect(() => {
         fetchInvoices();
@@ -71,6 +80,22 @@ export const InvoiceList = () => {
         }
     };
 
+    const handleReturnInvoice = async (invoiceId) => {
+        try{
+
+        }
+        catch(err){
+            setError('Failed to download invoice. Please try again later.');
+        }
+    }
+    
+    const toggleProductList = (invoiceId) => {
+        setExpandedRows(prev => ({
+            ...prev,
+            [invoiceId]: !prev[invoiceId]
+        }));    
+    };
+
     if (loading) {
         return (
             <Container sx={{ display: 'flex', justifyContent: 'center', padding: 4 }}>
@@ -118,22 +143,79 @@ export const InvoiceList = () => {
                     <TableBody>
                         {Array.isArray(invoices) && invoices.length > 0 ? (
                             invoices.map((invoice) => (
-                                <TableRow key={invoice.id}>
-                                    <TableCell>{invoice.id}</TableCell>
-                                    <TableCell>{new Date(invoice.date).toLocaleDateString()}</TableCell>
-                                    <TableCell>{invoice.customer?.name || 'N/A'}</TableCell>
-                                    <TableCell>€{invoice.total?.toFixed(2) || 'N/A'}</TableCell>
-                                    <TableCell>{invoice.status || 'N/A'}</TableCell>
-                                    <TableCell>
-                                        <Button 
-                                            variant="contained" 
-                                            size="small"
-                                            onClick={() => handleDownloadInvoice(invoice.id)}
-                                        >
-                                            Download
-                                        </Button>
-                                    </TableCell>
-                                </TableRow>
+                                <React.Fragment key={invoice.id}>
+                                    <TableRow>
+                                        <TableCell>
+                                            <IconButton
+                                                aria-label="expand row"
+                                                size="small"
+                                                onClick={() => toggleProductList(invoice.id)}
+                                            >
+                                                {expandedRows[invoice.id] ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                                            </IconButton>
+                                            {invoice.id}
+                                        </TableCell>
+                                        <TableCell>{new Date(invoice.date).toLocaleDateString()}</TableCell>
+                                        <TableCell>{invoice.customer?.name || invoice.contactName || 'N/A'}</TableCell>
+                                        <TableCell>€{invoice.total?.toFixed(2) || 'N/A'}</TableCell>
+                                        <TableCell>{invoice.status || 'N/A'}</TableCell>
+                                        <TableCell>
+                                            <Button 
+                                                variant="contained" 
+                                                size="small"
+                                                onClick={() => handleDownloadInvoice(invoice.id)}
+                                                sx={{ mr: 1 }}
+                                            >
+                                                Download
+                                            </Button>
+                                            <Button
+                                                variant="contained"
+                                                size="small"
+                                                onClick={() => handleReturnInvoice(invoice.id)}
+                                            >
+                                                Return
+                                            </Button>
+                                        </TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+                                            <Collapse in={expandedRows[invoice.id]} timeout="auto" unmountOnExit>
+                                                <Box sx={{ margin: 2 }}>
+                                                    <Typography variant="h6" gutterBottom component="div">
+                                                        Products
+                                                    </Typography>
+                                                    {invoice.products && invoice.products.length > 0 ? (
+                                                        <List>
+                                                            {invoice.products.map((product, index) => (
+                                                                <React.Fragment key={index}>
+                                                                    <ListItem>
+                                                                        <ListItemText
+                                                                            primary={product.name}
+                                                                            secondary={
+                                                                                <>
+                                                                                    <Typography component="span" variant="body2" color="text.primary">
+                                                                                        Description: {product.desc || 'No description'}
+                                                                                    </Typography>
+                                                                                    <br />
+                                                                                    <Typography component="span" variant="body2">
+                                                                                        Price: €{product.price?.toFixed(2) || 'N/A'} | Units: {product.units} | Tax: {product.tax}%
+                                                                                    </Typography>
+                                                                                </>
+                                                                            }
+                                                                        />
+                                                                    </ListItem>
+                                                                    {index < invoice.products.length - 1 && <Divider />}
+                                                                </React.Fragment>
+                                                            ))}
+                                                        </List>
+                                                    ) : (
+                                                        <Typography variant="body2">No products found for this invoice</Typography>
+                                                    )}
+                                                </Box>
+                                            </Collapse>
+                                        </TableCell>
+                                    </TableRow>
+                                </React.Fragment>
                             ))
                         ) : (
                             <TableRow>
