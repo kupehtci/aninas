@@ -3,20 +3,17 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 import { ProductList } from './components/ProductList';
 import { InvoiceList } from './components/InvoiceList';
+import {NavigationBar} from './components/NavigationBar';
 
 const theme = createTheme();
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
-
-  const handleLogin = (userData) => {
-    setIsAuthenticated(true);
-  };
 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Router>
+        <NavigationBar />
         <Routes>
           <Route
             path="/"

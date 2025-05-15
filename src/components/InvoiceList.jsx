@@ -163,6 +163,7 @@ export const InvoiceList = () => {
                                             <Button 
                                                 variant="contained" 
                                                 size="small"
+                                                // color=
                                                 onClick={() => handleDownloadInvoice(invoice.id)}
                                                 sx={{ mr: 1 }}
                                             >
