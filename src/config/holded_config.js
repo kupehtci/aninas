@@ -1,8 +1,8 @@
 export const HOLDED_CONFIG = {
     baseURL: 'http://localhost:3001/api',
-    headers: {
-        'Content-Type': 'application/json'
-    }
+    // headers: {
+    //     'Content-Type': 'application/json'
+    // }
 };
 
 export const ENDPOINTS = {

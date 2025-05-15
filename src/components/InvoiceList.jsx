@@ -67,7 +67,7 @@ export const InvoiceList = () => {
         try {
             await holdedService.downloadInvoice(invoiceId);
         } catch (err) {
-            setError('Failed to download invoice. Please try again later.');
+            setError('Failed to download invoice. Please try again later.Error: ' + err);
         }
     };
 
