@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 import { ProductList } from './components/ProductList';
+import { InvoiceList } from './components/InvoiceList';
 
 const theme = createTheme();
 
@@ -21,6 +22,12 @@ function App() {
             path="/"
             element={
                 <ProductList />
+            }
+          />
+          <Route
+            path="/invoices"
+            element={
+                <InvoiceList />
             }
           />
         </Routes>

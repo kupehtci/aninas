@@ -8,5 +8,6 @@ export const HOLDED_CONFIG = {
 export const ENDPOINTS = {
     products: '/products',
     invoice: '/my/orders/pdf',
+    invoices: '/documents/invoice',
     auth: '/web/session/authenticate'
 };

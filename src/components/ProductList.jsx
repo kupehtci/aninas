@@ -8,8 +8,10 @@ import {
     Typography,
     Button,
     CircularProgress,
-    Alert
+    Alert,
+    Box
 } from '@mui/material';
+import { Link } from 'react-router-dom';
 import { holdedService } from '../services/holdedService';
 
 export const ProductList = () => {
@@ -60,9 +62,19 @@ export const ProductList = () => {
 
     return (
         <Container sx={{ padding: 4 }}>
-            <Typography variant="h4" component="h1" gutterBottom>
-                Available Products
-            </Typography>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+                <Typography variant="h4" component="h1" gutterBottom>
+                    Available Products
+                </Typography>
+                <Button 
+                    component={Link} 
+                    to="/invoices" 
+                    variant="contained" 
+                    color="primary"
+                >
+                    View Invoices
+                </Button>
+            </Box>
             <Grid container spacing={3}>
                 {products.map((product) => (
                     <Grid item xs={12} sm={6} md={4} key={product.id}>
