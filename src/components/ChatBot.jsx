@@ -23,7 +23,7 @@ export const ChatBot = ({ products, invoices }) => {
     const [input, setInput] = useState('');
     const [messages, setMessages] = useState([]);
 
-    const handleSend = () => {
+    const handleSend = async () => {
         if (!input.trim()) return;
 
         // Add user message
@@ -31,29 +31,70 @@ export const ChatBot = ({ products, invoices }) => {
         setMessages(prev => [...prev, userMessage]);
 
         // Process the query and generate response
-        const response = processQuery(input, products, invoices);
+        const response = await processQuery(input, products, invoices);
         setMessages(prev => [...prev, { text: response, sender: 'bot' }]);
 
         setInput('');
     };
 
-    const processQuery = (query, products, invoices) => {
+    const processQuery = async (query, products, invoices) => {
         const lowerQuery = query.toLowerCase();
 
         // Handle product-related queries
         if (lowerQuery.includes('product') || lowerQuery.includes('item')) {
-            if (lowerQuery.includes('how many') || lowerQuery.includes('count')) {
-                return `There are ${products?.length || 0} products in the system.`;
-            }
-            // Add more product-related query handling
+            
+            const response =  await fetch("https://openrouter.ai/api/v1/chat/completions", {
+                method: "POST",
+                headers: {
+                  "Authorization": "Bearer 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",
+                  "HTTP-Referer": "www.aninas-shop.com", // Optional. Site URL for rankings on openrouter.ai.
+                  "X-Title": "www.aninas-shop.com", // Optional. Site title for rankings on openrouter.ai.
+                  "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                  "model": "meta-llama/llama-3.3-8b-instruct:free",
+                  "messages": [
+                    {
+                      "role": "user",
+                      "content": lowerQuery + " and take into account that i have this products: " + JSON.stringify(products)
+                    }
+                  ]
+                })
+              });
+
+              const data = await response.json();
+              console.log(data);
+              return data.choices[0].message.content;
+
+              
         }
 
         // Handle invoice-related queries
         if (lowerQuery.includes('invoice') || lowerQuery.includes('bill')) {
-            if (lowerQuery.includes('how many') || lowerQuery.includes('count')) {
-                return `There are ${invoices?.length || 0} invoices in the system.`;
-            }
-            // Add more invoice-related query handling
+            
+        const response =  await fetch("https://openrouter.ai/api/v1/chat/completions", {
+            method: "POST",
+            headers: {
+                "Authorization": "Bearer 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",
+                "HTTP-Referer": "www.aninas-shop.com", 
+                "X-Title": "www.aninas-shop.com",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                "model": "meta-llama/llama-3.3-8b-instruct:free",
+                "messages": [
+                {
+                    "role": "user",
+                    "content": lowerQuery + " and take into account that i have this invoices: " + JSON.stringify(invoices) + "But dont show this information on  chat, only answer the question i ask you"
+                }
+                ]
+            })
+            });
+
+            const data = await response.json();
+            console.log(data);
+            return data.choices[0].message.content;
+            
         }
 
         return "I'm sorry, I don't understand that query. You can ask me about products or invoices.";

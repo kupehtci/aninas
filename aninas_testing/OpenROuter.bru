@@ -1,0 +1,27 @@
+meta {
+  name: OpenROuter
+  type: http
+  seq: 5
+}
+
+post {
+  url: https://openrouter.ai/api/v1/chat/completions
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: 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
+}
+
+body:json {
+  {
+    "model": "meta-llama/llama-3.3-8b-instruct:free",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What is Universidad San Jorge?"
+      }
+    ]
+  }
+}
