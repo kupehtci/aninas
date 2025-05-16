@@ -25,8 +25,8 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { Link } from 'react-router-dom';
 import { holdedService } from '../services/holdedService';
 
-export const InvoiceList = () => {
-    const [invoices, setInvoices] = useState([]);
+export const InvoiceList = ({ invoices, setInvoices }) => {
+
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [expandedRows, setExpandedRows] = useState({});

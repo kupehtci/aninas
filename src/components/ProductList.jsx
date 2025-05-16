@@ -14,8 +14,8 @@ import {
 import { Link } from 'react-router-dom';
 import { holdedService } from '../services/holdedService';
 
-export const ProductList = () => {
-    const [products, setProducts] = useState([]);
+export const ProductList = ({ products, setProducts }) => {
+
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
