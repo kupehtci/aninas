@@ -118,14 +118,14 @@ export const InvoiceList = ({ invoices, setInvoices }) => {
                 <Typography variant="h4" component="h1">
                     Invoices
                 </Typography>
-                <Button 
+                {/* <Button 
                     component={Link} 
                     to="/" 
                     variant="contained" 
                     color="primary"
                 >
                     View Products
-                </Button>
+                </Button> */}
             </Box>
             
             <TableContainer component={Paper}>
@@ -169,13 +169,13 @@ export const InvoiceList = ({ invoices, setInvoices }) => {
                                             >
                                                 Download
                                             </Button>
-                                            <Button
+                                            {/* <Button
                                                 variant="contained"
                                                 size="small"
                                                 onClick={() => handleReturnInvoice(invoice.id)}
                                             >
                                                 Return
-                                            </Button>
+                                            </Button> */}
                                         </TableCell>
                                     </TableRow>
                                     <TableRow>

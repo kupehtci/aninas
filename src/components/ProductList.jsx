@@ -66,14 +66,14 @@ export const ProductList = ({ products, setProducts }) => {
                 <Typography variant="h4" component="h1" gutterBottom>
                     Available Products
                 </Typography>
-                <Button 
+                {/* <Button 
                     component={Link} 
                     to="/invoices" 
                     variant="contained" 
                     color="primary"
                 >
                     View Invoices
-                </Button>
+                </Button> */}
             </Box>
             <Grid container spacing={3}>
                 {products.map((product) => (
