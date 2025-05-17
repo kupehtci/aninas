@@ -66,27 +66,19 @@ export const ProductList = ({ products, setProducts }) => {
                 <Typography variant="h4" component="h1" gutterBottom>
                     Available Products
                 </Typography>
-                <Button 
+                {/* <Button 
                     component={Link} 
                     to="/invoices" 
                     variant="contained" 
                     color="primary"
                 >
                     View Invoices
-                </Button>
+                </Button> */}
             </Box>
             <Grid container spacing={3}>
                 {products.map((product) => (
                     <Grid item xs={12} sm={6} md={4} key={product.id}>
                         <Card>
-                            {/* {product.image_url && (
-                                <CardMedia
-                                    component="img"
-                                    height="200"
-                                    image={product.image_url}
-                                    alt={product.name}
-                                />
-                            )} */}
                             <CardContent>
                                 <Typography gutterBottom variant="h6" component="h2">
                                     {product.name}

@@ -18,7 +18,8 @@ import {
     List,
     ListItem,
     ListItemText,
-    Divider
+    Divider,
+    TextField
 } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
@@ -30,6 +31,7 @@ export const InvoiceList = ({ invoices, setInvoices }) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [expandedRows, setExpandedRows] = useState({});
+    const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
         fetchInvoices();
@@ -114,20 +116,28 @@ export const InvoiceList = ({ invoices, setInvoices }) => {
 
     return (
         <Container sx={{ padding: 4 }}>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mb: 3 }}>
                 <Typography variant="h4" component="h1">
                     Invoices
                 </Typography>
-                <Button 
+                {/* <Button 
                     component={Link} 
                     to="/" 
                     variant="contained" 
                     color="primary"
                 >
                     View Products
-                </Button>
+                </Button> */}
             </Box>
             
+            <TextField
+                fullWidth
+                variant="outlined"
+                placeholder="Search invoices..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                sx={{ mb: 2 }}
+            />
             <TableContainer component={Paper}>
                 <Table>
                     <TableHead>
@@ -142,7 +152,17 @@ export const InvoiceList = ({ invoices, setInvoices }) => {
                     </TableHead>
                     <TableBody>
                         {Array.isArray(invoices) && invoices.length > 0 ? (
-                            invoices.map((invoice) => (
+                            invoices.filter(invoice => {
+                                const searchLower = searchTerm.toLowerCase();
+                                return (
+                                    invoice.id?.toString().toLowerCase().includes(searchLower) ||
+                                    invoice.customer?.name?.toString().includes(searchLower) ||
+                                    invoice.contactName?.toString().toLowerCase().includes(searchLower) ||
+                                    invoice.status?.toString().toLowerCase().includes(searchLower) ||
+                                    invoice.total?.toString().toLowerCase().includes(searchLower) ||
+                                    invoice.products?.some(product => product.name?.toString().toLowerCase().includes(searchLower))
+                                );
+                            }).map((invoice) => (
                                 <React.Fragment key={invoice.id}>
                                     <TableRow>
                                         <TableCell>
@@ -169,13 +189,13 @@ export const InvoiceList = ({ invoices, setInvoices }) => {
                                             >
                                                 Download
                                             </Button>
-                                            <Button
+                                            {/* <Button
                                                 variant="contained"
                                                 size="small"
                                                 onClick={() => handleReturnInvoice(invoice.id)}
                                             >
                                                 Return
-                                            </Button>
+                                            </Button> */}
                                         </TableCell>
                                     </TableRow>
                                     <TableRow>
